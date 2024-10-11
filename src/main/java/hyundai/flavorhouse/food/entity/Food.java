@@ -31,6 +31,11 @@ public class Food extends BaseEntity {
     private String name;
     private String address;
 
+    public void changeNameAndAddress(String name, String address) {
+        this.name = name;
+        this.address = address;
+    }
+
     public static Food createFromRequest(CreateAndEditFoodRequest request) {
         return Food.builder()
                 .name(request.name())

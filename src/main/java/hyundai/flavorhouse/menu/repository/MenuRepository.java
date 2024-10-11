@@ -8,4 +8,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface MenuRepository extends JpaRepository<Menu, Long> {
 
     List<Menu> findAllByFoodId(Long foodId);
+
+    void deleteAllByFoodId(Long foodId);
 }
