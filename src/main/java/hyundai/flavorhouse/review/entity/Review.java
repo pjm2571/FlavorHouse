@@ -1,6 +1,7 @@
 package hyundai.flavorhouse.review.entity;
 
 import hyundai.flavorhouse.base.entity.BaseEntity;
+import hyundai.flavorhouse.review.dto.CreateReviewRequest;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -26,4 +27,12 @@ public class Review extends BaseEntity {
     private Long foodId;
     private String content;
     private Double score;
+
+    public static Review createFromRequest(CreateReviewRequest request) {
+        return Review.builder()
+                .foodId(request.foodId())
+                .content(request.content())
+                .score(request.score())
+                .build();
+    }
 }
