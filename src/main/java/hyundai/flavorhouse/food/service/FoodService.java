@@ -90,4 +90,16 @@ public class FoodService {
         // 저장된 Food Entity, Menu Entities 를 바탕으로 response dto 생성
         return CreateAndEditFoodResponse.of(savedFood, savedMenus);
     }
+
+    @Transactional
+    public void deleteFood(Long foodId) {
+        // 1) foodId에 해당하는 모든 menu들을 지움
+        menuRepository.deleteAllByFoodId(foodId);
+
+        // 2) foodId에 해당하는 food Entity 조회
+        Food food = foodRepository.findById(foodId).orElseThrow(IllegalArgumentException::new);
+
+        // 3) 해당 객체 삭제
+        foodRepository.delete(food);
+    }
 }
