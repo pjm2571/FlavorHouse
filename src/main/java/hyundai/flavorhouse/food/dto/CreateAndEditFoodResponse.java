@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public record CreateAndEditFoodResponse(
+        Long id,
         String name,
         String address,
         LocalDateTime createdAt,
@@ -21,6 +22,7 @@ public record CreateAndEditFoodResponse(
                 .collect(Collectors.toList());
 
         return new CreateAndEditFoodResponse(
+                food.getId(),
                 food.getName(),
                 food.getAddress(),
                 food.getCreatedAt(),

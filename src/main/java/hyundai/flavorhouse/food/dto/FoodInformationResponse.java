@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public record FoodInformationResponse(
+        Long id,
         String name,
         String address,
         List<MenuDto> menus
@@ -20,6 +21,7 @@ public record FoodInformationResponse(
 
         // FoodInformationResponse 객체 생성
         return new FoodInformationResponse(
+                food.getId(),
                 food.getName(),
                 food.getAddress(),
                 menuDtos
