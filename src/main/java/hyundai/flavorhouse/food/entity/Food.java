@@ -1,24 +1,38 @@
 package hyundai.flavorhouse.food.entity;
 
+import hyundai.flavorhouse.base.entity.BaseEntity;
+import hyundai.flavorhouse.food.dto.CreateAndEditFoodRequest;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Entity
 @Table(name = "food")
-public class Food {
+@EntityListeners(AuditingEntityListener.class)
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+public class Food extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
     private String address;
-    @Column(name = "created_at")
-    private LocalDateTime createdAt;
-    @Column(name = "updated_at")
-    private LocalDateTime updatedAt;
+
+    public static Food createFromRequest(CreateAndEditFoodRequest request) {
+        return Food.builder()
+                .name(request.name())
+                .address(request.address())
+                .build();
+    }
 }
