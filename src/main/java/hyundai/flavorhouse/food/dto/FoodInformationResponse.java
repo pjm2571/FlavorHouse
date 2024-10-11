@@ -3,30 +3,26 @@ package hyundai.flavorhouse.food.dto;
 import hyundai.flavorhouse.food.entity.Food;
 import hyundai.flavorhouse.menu.dto.MenuDto;
 import hyundai.flavorhouse.menu.entity.Menu;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public record FoodResponse(
+public record FoodInformationResponse(
         String name,
         String address,
-        LocalDateTime createdAt,
-        LocalDateTime updatedAt,
         List<MenuDto> menus
 ) {
 
-    public static FoodResponse of(Food food, List<Menu> menus) {
+    public static FoodInformationResponse fromEntity(Food food, List<Menu> menus) {
+        // Menu 리스트를 MenuDto 리스트로 변환
         List<MenuDto> menuDtos = menus.stream()
-                .map(MenuDto::fromEntity) // DTO 변환 책임을 DTO에게 위임
+                .map(MenuDto::fromEntity)
                 .collect(Collectors.toList());
 
-        return new FoodResponse(
+        // FoodInformationResponse 객체 생성
+        return new FoodInformationResponse(
                 food.getName(),
                 food.getAddress(),
-                food.getCreatedAt(),
-                food.getUpdatedAt(),
                 menuDtos
         );
     }
-
 }
