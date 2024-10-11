@@ -3,7 +3,8 @@ package hyundai.flavorhouse.food.controller;
 import hyundai.flavorhouse.food.dto.CreateAndEditFoodRequest;
 import hyundai.flavorhouse.food.dto.CreateAndEditFoodResponse;
 import hyundai.flavorhouse.food.dto.FoodDeleteResponse;
-import hyundai.flavorhouse.food.dto.FoodInformationResponse;
+import hyundai.flavorhouse.food.dto.FoodDetailViewResponse;
+import hyundai.flavorhouse.food.dto.FoodViewResponse;
 import hyundai.flavorhouse.food.service.FoodService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -26,7 +27,7 @@ public class FoodController {
 
     @GetMapping("/foods")
     public ResponseEntity<?> getFoods() {
-        List<FoodInformationResponse> response = foodService.getFoods();
+        List<FoodViewResponse> response = foodService.getFoods();
 
         return ResponseEntity.ok(response);
     }
@@ -35,7 +36,7 @@ public class FoodController {
     public ResponseEntity<?> getFoodById(
             @PathVariable Long foodId
     ) {
-        FoodInformationResponse response = foodService.getFoodById(foodId);
+        FoodDetailViewResponse response = foodService.getFoodById(foodId);
 
         return ResponseEntity.ok(response);
     }

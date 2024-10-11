@@ -2,7 +2,8 @@ package hyundai.flavorhouse.food.service;
 
 import hyundai.flavorhouse.food.dto.CreateAndEditFoodRequest;
 import hyundai.flavorhouse.food.dto.CreateAndEditFoodResponse;
-import hyundai.flavorhouse.food.dto.FoodInformationResponse;
+import hyundai.flavorhouse.food.dto.FoodDetailViewResponse;
+import hyundai.flavorhouse.food.dto.FoodViewResponse;
 import hyundai.flavorhouse.food.entity.Food;
 import hyundai.flavorhouse.food.repository.FoodRepository;
 import hyundai.flavorhouse.menu.entity.Menu;
@@ -21,31 +22,24 @@ public class FoodService {
     private final MenuRepository menuRepository;
 
     @Transactional(readOnly = true)
-    public List<FoodInformationResponse> getFoods() {
+    public List<FoodViewResponse> getFoods() {
         // foodRepository에 있는 모든 food 엔티티 조회
         List<Food> foods = foodRepository.findAll();
 
         return foods.stream()
-                .map(food -> {
-                    // foodId에 해당하는 메뉴 리스트를 가져온다
-                    List<Menu> menus = menuRepository.findAllByFoodId(food.getId());
-
-                    // FoodInformationResponse의 정적 팩토리 메서드를 사용하여 객체 생성
-                    return FoodInformationResponse.fromEntity(food, menus);
-
-                })
+                .map(FoodViewResponse::of)
                 .collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
-    public FoodInformationResponse getFoodById(Long foodId) {
+    public FoodDetailViewResponse getFoodById(Long foodId) {
 
         // findById 메소드로 엔티티 조회 -> 없는 경우 예외 발생시킴
         Food food = foodRepository.findById(foodId).orElseThrow(IllegalArgumentException::new);
 
         List<Menu> menus = menuRepository.findAllByFoodId(foodId);
 
-        return FoodInformationResponse.fromEntity(food, menus);
+        return FoodDetailViewResponse.fromEntity(food, menus);
     }
 
     @Transactional
