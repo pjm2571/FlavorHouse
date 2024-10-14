@@ -34,4 +34,18 @@ public class ReviewRepositoryImpl implements ReviewRepositoryCustom {
                 reviews.size() > pageable.getPageSize() // hasNext
         );
     }
+
+    @Override
+    public Double getAvgScoreByFoodId(Long foodId) {
+        QReview review = QReview.review;
+
+        // QueryDSL을 사용한 평균 평점 계산
+        Double averageScore = jpaQueryFactory
+                .select(review.score.avg()) // score 컬럼의 평균값
+                .from(review)
+                .where(review.foodId.eq(foodId))
+                .fetchOne(); // 단일 값 반환
+
+        return averageScore != null ? averageScore : 0.0; // null이면 0.0 반환
+    }
 }

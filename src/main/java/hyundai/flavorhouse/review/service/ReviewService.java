@@ -1,11 +1,14 @@
 package hyundai.flavorhouse.review.service;
 
-import hyundai.flavorhouse.food.entity.Food;
 import hyundai.flavorhouse.food.repository.FoodRepository;
 import hyundai.flavorhouse.review.dto.CreateReviewRequest;
+import hyundai.flavorhouse.review.dto.ReviewDto;
+import hyundai.flavorhouse.review.dto.ReviewDtoPage;
 import hyundai.flavorhouse.review.entity.Review;
 import hyundai.flavorhouse.review.repository.ReviewRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -31,6 +34,21 @@ public class ReviewService {
                 .orElseThrow(IllegalArgumentException::new);
 
         reviewRepository.delete(review);
+    }
+
+    public ReviewDto getAllReviews(Long foodId, Pageable pageable) {
+        // 1) review 평점 가져오기
+        Double avgScore = reviewRepository.getAvgScoreByFoodId(foodId);
+
+        // 2) Review 엔티티 조회
+        Slice<Review> reviews = reviewRepository.findSliceByFoodId(foodId, pageable);
+
+        return ReviewDto.of(
+                avgScore,
+                reviews,
+                ReviewDtoPage.of(pageable.getPageNumber() * pageable.getPageSize(),
+                        pageable.getPageSize()));
+
     }
 
 }

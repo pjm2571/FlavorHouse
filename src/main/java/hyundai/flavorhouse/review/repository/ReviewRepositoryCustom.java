@@ -5,6 +5,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 
 public interface ReviewRepositoryCustom {
+
     Slice<Review> findSliceByFoodId(Long foodId, Pageable pageable);
 
+    Double getAvgScoreByFoodId(Long foodId);
 }
